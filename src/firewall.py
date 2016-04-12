@@ -3,7 +3,7 @@ Created on 2016年4月12日
 
 @author: Yo
 '''
-from asyncio.protocols import Protocol
+
 class Pp:
     def __init__(self):
         self.rule=[]
@@ -43,7 +43,7 @@ class Service_Ctl:
         self.list.append(service)
     
     def RemoveService(self,service=Service()):
-        self.RemoveService(service)
+        self.list.remove(service)
 
 class Zone:
     def __init__(self,name="None",default="Allow"):
@@ -53,5 +53,30 @@ class Zone:
         
 class Zone_Ctl:
     def __init__(self):
-        self.zonelist=["block","dmz","drop","external","home","internal","public","trusted","work"]
+        self.zonelist=[]
         self.default="public"
+        
+        
+if __name__=="__main__":
+    print("-------")
+    pp=Pp()
+    pp.AddPpRule(20)
+    pp.AddPpRule(80,"udp")
+    print(pp.rule)
+    pp.RemovePpRule(80,"tcp")
+    print(pp.rule)
+    pp.AddPpRule(80,"udp")
+    pp.EditPpRule(80,"udp",80,"tcp")
+    print(pp.rule)
+    print("-------")
+    servicelist=Service_Ctl()
+    service=Service()
+    service.SetServiceName("httpd")
+    service.SetServicePp(pp)
+    print(service.name)
+    print(service.pp.rule)
+    #servicelist.AddService(service)
+    #print(Service_Ctl.list)
+    print("-------")
+    
+    
